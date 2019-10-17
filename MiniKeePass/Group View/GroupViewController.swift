@@ -113,10 +113,10 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
             switch selectedItem! {
             case .entry(let entry):
                 section = Section.entries.rawValue
-                row = entries.index(of: entry)
+                row = entries.firstIndex(of: entry)
             case .group(let group):
                 section = Section.groups.rawValue
-                row = groups.index(of: group)
+                row = groups.firstIndex(of: group)
             }
             selectedItem = nil
             
@@ -164,8 +164,8 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
             groups = []
             entries = searchResults
         } else {
-            groups = parentGroup.groups as! [KdbGroup]
-            entries = parentGroup.entries as! [KdbEntry]
+            groups = parentGroup.groups as? [KdbGroup]
+            entries = parentGroup.entries as? [KdbEntry]
         }
 
         if let appSettings = AppSettings.sharedInstance(), appSettings.sortAlphabetically() {
@@ -226,7 +226,7 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
             }
         }
 
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -303,7 +303,7 @@ class GroupViewController: UITableViewController, UISearchResultsUpdating {
         return [deleteAction]
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle != .delete) {
             return
         }
